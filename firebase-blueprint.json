@@ -1,0 +1,273 @@
+{
+  "entities": {
+    "Article": {
+      "title": "Article",
+      "description": "Telugu news article for AADHYA NEWS",
+      "type": "object",
+      "properties": {
+        "titleTe": {
+          "type": "string",
+          "description": "Telugu headline of the article"
+        },
+        "contentTe": {
+          "type": "string",
+          "description": "Full Telugu content and body of the article"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Cover image URL"
+        },
+        "imageCaption": {
+          "type": "string",
+          "description": "Optional caption for cover image"
+        },
+        "categoryId": {
+          "type": "string",
+          "description": "Category ID"
+        },
+        "districtId": {
+          "type": "string",
+          "description": "Optional district ID"
+        },
+        "authorName": {
+          "type": "string",
+          "description": "Reporter or author name"
+        },
+        "authorId": {
+          "type": "string",
+          "description": "UID of the admin/author who created the article"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "scheduled", "published"],
+          "description": "Publication status"
+        },
+        "isBreaking": {
+          "type": "boolean",
+          "description": "Whether this is breaking news"
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "description": "Whether this is featured on top carousel"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "Optional attached video URL"
+        },
+        "viewCount": {
+          "type": "integer",
+          "description": "Total views for trending section"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp via serverTimestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp via serverTimestamp"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Publication timestamp"
+        }
+      },
+      "required": ["titleTe", "contentTe", "categoryId", "status", "isBreaking", "isFeatured", "authorName", "createdAt", "updatedAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "News category in Telugu",
+      "type": "object",
+      "properties": {
+        "nameTe": {
+          "type": "string",
+          "description": "Telugu category name"
+        },
+        "slug": {
+          "type": "string",
+          "description": "English slug or identifier"
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Whether category is active"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "description": "Display sort order"
+        }
+      },
+      "required": ["nameTe", "slug", "isActive", "sortOrder"]
+    },
+    "District": {
+      "title": "District",
+      "description": "District in Telangana/Andhra Pradesh for localized news",
+      "type": "object",
+      "properties": {
+        "nameTe": {
+          "type": "string",
+          "description": "Telugu district name"
+        },
+        "isActive": {
+          "type": "boolean",
+          "description": "Whether district filter is active"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "description": "Display sort order"
+        }
+      },
+      "required": ["nameTe", "isActive", "sortOrder"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Public app settings and live stream configuration",
+      "type": "object",
+      "properties": {
+        "appName": {
+          "type": "string",
+          "description": "Application display name"
+        },
+        "taglineTe": {
+          "type": "string",
+          "description": "Telugu tagline"
+        },
+        "liveStreamUrl": {
+          "type": "string",
+          "description": "Authorized HLS / M3U8 Live TV stream URL"
+        },
+        "liveStreamEnabled": {
+          "type": "boolean",
+          "description": "Whether live stream broadcast is currently active"
+        },
+        "breakingNewsArticleIds": {
+          "type": "array",
+          "description": "List of article IDs for ticker"
+        },
+        "maintenanceMode": {
+          "type": "boolean",
+          "description": "Maintenance mode flag"
+        }
+      },
+      "required": ["appName", "taglineTe", "liveStreamEnabled", "maintenanceMode"]
+    },
+    "VideoNews": {
+      "title": "VideoNews",
+      "description": "Recorded video news bulletin or clip",
+      "type": "object",
+      "properties": {
+        "titleTe": {
+          "type": "string",
+          "description": "Telugu video title"
+        },
+        "thumbnailUrl": {
+          "type": "string",
+          "description": "Video thumbnail image URL"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "Video stream / mp4 URL"
+        },
+        "durationSeconds": {
+          "type": "integer",
+          "description": "Duration of video in seconds"
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Publication timestamp"
+        },
+        "isPublished": {
+          "type": "boolean",
+          "description": "Whether video is published"
+        }
+      },
+      "required": ["titleTe", "thumbnailUrl", "videoUrl", "durationSeconds", "isPublished"]
+    },
+    "UserBookmark": {
+      "title": "UserBookmark",
+      "description": "Bookmarked article for an authenticated user",
+      "type": "object",
+      "properties": {
+        "articleId": {
+          "type": "string",
+          "description": "ID of bookmarked article"
+        },
+        "titleTe": {
+          "type": "string",
+          "description": "Cached title"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Cached image URL"
+        },
+        "categoryNameTe": {
+          "type": "string",
+          "description": "Cached category name"
+        },
+        "savedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Saved timestamp"
+        }
+      },
+      "required": ["articleId", "titleTe", "savedAt"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Authorized administrator record",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Admin email address"
+        },
+        "role": {
+          "type": "string",
+          "description": "Role string e.g. admin or editor"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Admin display name"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Created at timestamp"
+        }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/articles/{articleId}": {
+      "schema": "Article",
+      "description": "Published and draft news articles"
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "News categories"
+    },
+    "/districts/{districtId}": {
+      "schema": "District",
+      "description": "District classification"
+    },
+    "/appSettings/{settingId}": {
+      "schema": "AppSettings",
+      "description": "Public app settings e.g. live stream and ticker"
+    },
+    "/videos/{videoId}": {
+      "schema": "VideoNews",
+      "description": "Video news articles and bulletins"
+    },
+    "/users/{userId}/bookmarks/{articleId}": {
+      "schema": "UserBookmark",
+      "description": "Personal saved bookmarks for user"
+    },
+    "/admins/{adminId}": {
+      "schema": "AdminUser",
+      "description": "Admin privileges registry"
+    }
+  }
+}

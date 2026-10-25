@@ -1,0 +1,170 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'srisahasramedicals@gmail.com' ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidArticle(data) {
+      return data.titleTe is string && data.titleTe.size() >= 3 && data.titleTe.size() <= 500 &&
+             data.contentTe is string && data.contentTe.size() >= 5 && data.contentTe.size() <= 100000 &&
+             data.categoryId is string && data.categoryId.size() <= 100 &&
+             (!('districtId' in data) || (data.districtId is string && data.districtId.size() <= 100)) &&
+             (!('state' in data) || (data.state is string && data.state.size() <= 100)) &&
+             (!('mandal' in data) || (data.mandal is string && data.mandal.size() <= 100)) &&
+             (!('village' in data) || (data.village is string && data.village.size() <= 100)) &&
+             (!('gpsCoordinates' in data) || (data.gpsCoordinates is string && data.gpsCoordinates.size() <= 200)) &&
+             (!('mediaUrls' in data) || (data.mediaUrls is list && data.mediaUrls.size() <= 10)) &&
+             (!('imageUrl' in data) || (data.imageUrl is string && data.imageUrl.size() <= 2000)) &&
+             (!('imageCaption' in data) || (data.imageCaption is string && data.imageCaption.size() <= 500)) &&
+             data.authorName is string && data.authorName.size() <= 100 &&
+             (!('reporterPhone' in data) || (data.reporterPhone is string && data.reporterPhone.size() <= 30)) &&
+             data.status in ['draft', 'pending', 'approved', 'rejected', 'published'] &&
+             (!('rejectionReason' in data) || (data.rejectionReason is string && data.rejectionReason.size() <= 1000)) &&
+             data.isBreaking is bool &&
+             data.isFeatured is bool &&
+             (!('videoUrl' in data) || (data.videoUrl is string && data.videoUrl.size() <= 2000)) &&
+             (!('viewCount' in data) || data.viewCount is int) &&
+             (!('formattedDateTime' in data) || (data.formattedDateTime is string && data.formattedDateTime.size() <= 100));
+    }
+
+    function isValidReporter(data) {
+      return data.name is string && data.name.size() >= 2 && data.name.size() <= 100 &&
+             data.phone is string && data.phone.size() >= 8 && data.phone.size() <= 20 &&
+             data.role in ['reporter', 'admin'] &&
+             data.status in ['active', 'disabled', 'pending'];
+    }
+
+    function isValidCategory(data) {
+      return data.nameTe is string && data.nameTe.size() >= 2 && data.nameTe.size() <= 100 &&
+             data.slug is string && data.slug.size() >= 2 && data.slug.size() <= 100 &&
+             data.isActive is bool && data.sortOrder is int;
+    }
+
+    function isValidDistrict(data) {
+      return data.nameTe is string && data.nameTe.size() >= 2 && data.nameTe.size() <= 100 &&
+             data.isActive is bool && data.sortOrder is int;
+    }
+
+    function isValidAppSettings(data) {
+      return data.appName is string && data.appName.size() <= 100 &&
+             data.taglineTe is string && data.taglineTe.size() <= 200 &&
+             data.liveStreamEnabled is bool &&
+             data.maintenanceMode is bool &&
+             (!('liveStreamUrl' in data) || (data.liveStreamUrl is string && data.liveStreamUrl.size() <= 2000)) &&
+             (!('breakingNewsArticleIds' in data) || (data.breakingNewsArticleIds is list && data.breakingNewsArticleIds.size() <= 50));
+    }
+
+    function isValidVideo(data) {
+      return data.titleTe is string && data.titleTe.size() >= 3 && data.titleTe.size() <= 500 &&
+             data.thumbnailUrl is string && data.thumbnailUrl.size() <= 2000 &&
+             data.videoUrl is string && data.videoUrl.size() <= 2000 &&
+             data.durationSeconds is int && data.isPublished is bool;
+    }
+
+    function isValidBookmark(data) {
+      return data.articleId is string && data.articleId.size() <= 128 &&
+             data.titleTe is string && data.titleTe.size() <= 500;
+    }
+
+    // --- ARTICLES COLLECTION ---
+    match /articles/{articleId} {
+      // Public can read published or approved articles; reporters can read their own submissions; admins can read all
+      allow get: if resource.data.status in ['published', 'approved'] ||
+                    (isSignedIn() && resource.data.authorId == request.auth.uid) ||
+                    isAdmin();
+      allow list: if resource.data.status in ['published', 'approved'] ||
+                     (isSignedIn() && request.query.limit <= 100) ||
+                     isAdmin();
+
+      // Reporters can create pending articles; Admins can create any
+      allow create: if (isAdmin() || (isSignedIn() && incoming().status == 'pending' && incoming().authorId == request.auth.uid)) &&
+                       isValidId(articleId) &&
+                       isValidArticle(incoming());
+
+      // Admins can update any; users can increment view count
+      allow update: if (isAdmin() && isValidArticle(incoming())) ||
+                       (incoming().diff(existing()).affectedKeys().hasOnly(['viewCount']) &&
+                        incoming().viewCount == existing().viewCount + 1);
+
+      allow delete: if isAdmin();
+    }
+
+    // --- REPORTERS COLLECTION ---
+    match /reporters/{reporterId} {
+      allow get: if isSignedIn() || isAdmin();
+      allow list: if isSignedIn() || isAdmin();
+      allow create: if isSignedIn() && isValidId(reporterId) && isValidReporter(incoming());
+      allow update: if (isAdmin() || (isSignedIn() && request.auth.uid == reporterId)) && isValidReporter(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // --- CATEGORIES COLLECTION ---
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(categoryId) && isValidCategory(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // --- DISTRICTS COLLECTION ---
+    match /districts/{districtId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(districtId) && isValidDistrict(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // --- APP SETTINGS COLLECTION ---
+    match /appSettings/{settingId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && isValidId(settingId) && isValidAppSettings(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // --- VIDEOS COLLECTION ---
+    match /videos/{videoId} {
+      allow get: if resource.data.isPublished == true || isAdmin();
+      allow list: if resource.data.isPublished == true || isAdmin();
+      allow create, update: if isAdmin() && isValidId(videoId) && isValidVideo(incoming());
+      allow delete: if isAdmin();
+    }
+
+    // --- USER BOOKMARKS SUBCOLLECTION ---
+    match /users/{userId}/bookmarks/{articleId} {
+      allow read, delete: if isSignedIn() && request.auth.uid == userId;
+      allow create, update: if isSignedIn() && request.auth.uid == userId &&
+                               isValidId(articleId) && isValidBookmark(incoming());
+    }
+
+    // --- ADMIN USERS REGISTRY ---
+    match /admins/{adminId} {
+      allow read: if isSignedIn() && (request.auth.uid == adminId || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}

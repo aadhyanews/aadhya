@@ -1,0 +1,6 @@
+{
+  "name": "AADHYA NEWS",
+  "description": "ఆధ్య న్యూస్ - తెలుగు వార్తలు, బ్రేకింగ్ న్యూస్, లైవ్ టీవీ, వీడియో న్యూస్ మరియు సమగ్ర సమాచారం.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
