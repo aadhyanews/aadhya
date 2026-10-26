@@ -25,6 +25,8 @@ data class AppSettings(
     @DocumentId val id: String = "public",
     val appName: String = "AADHYA NEWS",
     val taglineTe: String = "ప్రజల గొంతుక... ప్రజల వార్త...",
+    val websiteDomain: String = "aadhyanews.com",
+    val websiteUrl: String = "https://aadhyanews.com",
     val liveStreamUrl: String = "",
     val liveStreamEnabled: Boolean = false,
     val breakingNewsArticleIds: List<String> = emptyList(),

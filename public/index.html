@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ఆధ్య న్యూస్ | AADHYA NEWS - ప్రజల గొంతుక... ప్రజల వార్త...</title>
+    <!-- Google Fonts: Noto Sans Telugu & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandRed: '#B61A1A',
+                        brandRedDark: '#931212',
+                        brandNavy: '#101C35',
+                        brandNavyDark: '#0A1224',
+                        brandGold: '#D4AF37',
+                        brandGoldLight: '#F5E7B2'
+                    },
+                    fontFamily: {
+                        telugu: ['Noto Sans Telugu', 'Inter', 'sans-serif'],
+                        sans: ['Inter', 'Noto Sans Telugu', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans Telugu', 'Inter', sans-serif;
+            background-color: #F8F9FA;
+            color: #1A202C;
+        }
+        .ticker-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .ticker-move {
+            display: inline-block;
+            animation: ticker 25s linear infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translate3d(100%, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+        .tab-active {
+            border-bottom: 3px solid #B61A1A;
+            color: #B61A1A;
+            font-weight: 700;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+
+    <!-- TOP BAR -->
+    <header class="bg-brandNavy text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo & Title -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('feed')">
+                    <div class="w-10 h-10 bg-brandRed rounded-lg flex items-center justify-center shadow-md font-black text-white text-xl tracking-tighter border border-white/20">
+                        AN
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl sm:text-2xl font-black tracking-tight text-white">ఆధ్య న్యూస్</span>
+                            <span class="bg-brandGold text-brandNavy font-extrabold text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">LIVE</span>
+                        </div>
+                        <p class="text-[10px] text-gray-300 font-medium hidden sm:block">ప్రజల గొంతుక... ప్రజల వార్త...</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Action Buttons -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button onclick="switchView('live-tv')" class="flex items-center space-x-1.5 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-bold px-3 py-1.5 rounded-full shadow transition">
+                        <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                        <span>లైవ్ టీవీ</span>
+                    </button>
+
+                    <!-- User / Login Status button -->
+                    <div id="authHeaderAction">
+                        <button onclick="openModal('loginModal')" class="bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg border border-white/10 transition flex items-center space-x-1.5">
+                            <i class="fa-solid fa-user-lock"></i>
+                            <span>లాగిన్ (Login)</span>
+                        </button>
+                    </div>
+
+                    <button onclick="openModal('permissionsModal')" title="యాప్ అనుమతులు" class="text-gray-300 hover:text-white p-2 text-lg">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BREAKING NEWS TICKER -->
+        <div class="bg-brandRed text-white py-1.5 px-4 text-xs sm:text-sm font-semibold flex items-center shadow-inner">
+            <div class="bg-white text-brandRed font-black px-2 py-0.5 rounded text-[11px] uppercase tracking-wider flex items-center space-x-1 mr-3 flex-shrink-0">
+                <i class="fa-solid fa-bolt animate-pulse"></i>
+                <span>బ్రేకింగ్</span>
+            </div>
+            <div class="ticker-wrap flex-1">
+                <div class="ticker-move text-white tracking-wide" id="tickerContent">
+                    నారాయణపేటలో సమగ్ర అభివృద్ధి పనులను ప్రారంభించిన అధికారులు • తెలంగాణలో నేతన్నలకు నూతన పథకాలు • ఆధ్య న్యూస్ ప్రత్యక్ష ప్రసారాలు ప్రారంభం •
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- SUB HEADER PORTAL TABS -->
+        <div class="flex flex-wrap items-center justify-between border-b border-gray-200 pb-3 mb-6 gap-3">
+            <div class="flex items-center space-x-2 sm:space-x-4 overflow-x-auto text-sm">
+                <button onclick="switchView('feed')" id="navTabFeed" class="tab-active pb-2 px-1 flex items-center space-x-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-newspaper"></i>
+                    <span>తాజా వార్తలు</span>
+                </button>
+                <button onclick="switchView('reporter')" id="navTabReporter" class="text-gray-600 hover:text-brandRed pb-2 px-1 flex items-center space-x-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>రిపోర్టర్ పోర్టల్</span>
+                </button>
+                <button onclick="switchView('admin')" id="navTabAdmin" class="text-gray-600 hover:text-brandRed pb-2 px-1 flex items-center space-x-1.5 whitespace-nowrap">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>అడ్మిన్ డాష్‌బోర్డ్</span>
+                </button>
+            </div>
+
+            <!-- Current Logged In Role Badge -->
+            <div id="currentUserBadge" class="hidden items-center space-x-2 text-xs bg-white px-3 py-1.5 rounded-full shadow-sm border border-gray-200">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span id="userNameDisplay" class="font-bold text-gray-800"></span>
+                <span id="userRoleBadge" class="bg-gray-100 text-brandNavy px-2 py-0.5 rounded font-bold uppercase text-[10px]"></span>
+                <button onclick="logoutUser()" class="text-red-500 hover:text-red-700 ml-2 font-bold" title="లాగౌట్">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 1: LIVE NEWS FEED                     -->
+        <!-- ========================================== -->
+        <div id="viewFeed" class="space-y-8">
+            <!-- District / Category Filter Chips -->
+            <div class="flex items-center space-x-2 overflow-x-auto pb-2" id="categoryChips">
+                <button onclick="filterCategory('all')" class="bg-brandRed text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-sm whitespace-nowrap">అన్నీ</button>
+                <button onclick="filterCategory('తెలంగాణ')" class="bg-white hover:bg-gray-100 text-gray-700 text-xs font-semibold px-3.5 py-1.5 rounded-full border border-gray-200 whitespace-nowrap">తెలంగాణ</button>
+                <button onclick="filterCategory('ఆంధ్రప్రదేశ్')" class="bg-white hover:bg-gray-100 text-gray-700 text-xs font-semibold px-3.5 py-1.5 rounded-full border border-gray-200 whitespace-nowrap">ఆంధ్రప్రదేశ్</button>
+                <button onclick="filterCategory('నారాయణపేట')" class="bg-white hover:bg-gray-100 text-gray-700 text-xs font-semibold px-3.5 py-1.5 rounded-full border border-gray-200 whitespace-nowrap">నారాయణపేట</button>
+                <button onclick="filterCategory('మహబూబ్ నగర్')" class="bg-white hover:bg-gray-100 text-gray-700 text-xs font-semibold px-3.5 py-1.5 rounded-full border border-gray-200 whitespace-nowrap">మహబూబ్ నగర్</button>
+                <button onclick="filterCategory('రాజకీయం')" class="bg-white hover:bg-gray-100 text-gray-700 text-xs font-semibold px-3.5 py-1.5 rounded-full border border-gray-200 whitespace-nowrap">రాజకీయం</button>
+                <button onclick="filterCategory('క్రైమ్')" class="bg-white hover:bg-gray-100 text-gray-700 text-xs font-semibold px-3.5 py-1.5 rounded-full border border-gray-200 whitespace-nowrap">క్రైమ్ & పోలీసు</button>
+            </div>
+
+            <!-- Hero Section: Featured Article & Live TV Card -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Featured Carousel / Big Lead Article -->
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition">
+                    <div class="relative h-64 sm:h-80 w-full overflow-hidden">
+                        <img id="heroImage" src="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=1200" alt="Lead News" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        <div class="absolute top-4 left-4 flex space-x-2">
+                            <span class="bg-brandRed text-white text-[11px] font-bold px-2.5 py-1 rounded shadow">ప్రధాన వార్త</span>
+                            <span id="heroLocationTag" class="bg-black/60 backdrop-blur-sm text-white text-[11px] px-2.5 py-1 rounded">తెలంగాణ • నారాయణపేట</span>
+                        </div>
+                        <div class="absolute bottom-4 left-4 right-4 text-white">
+                            <h2 id="heroTitle" class="text-xl sm:text-2xl font-black leading-snug drop-shadow-sm">
+                                నారాయణపేట జిల్లాలో రైతులకు నాణ్యమైన విత్తనాలు, ఎరువుల పంపిణీ వేగవంతం
+                            </h2>
+                            <div class="flex items-center space-x-4 mt-2 text-xs text-gray-300">
+                                <span><i class="fa-solid fa-user-pen mr-1"></i> ఆధ్య ప్రతినిధి</span>
+                                <span id="heroTime"><i class="fa-regular fa-clock mr-1"></i> ఇప్పుడే నవీకరించబడింది</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <p id="heroContent" class="text-gray-700 text-sm leading-relaxed">
+                            వ్యవసాయ రంగంలో రైతుల సంక్షేమానికి రాష్ట్ర ప్రభుత్వం కట్టుబడి ఉందని, ప్రతి రైతుకు అందుబాటులో ఉండేలా వ్యవసాయ శాఖ ద్వారా అవసరమైన ఎరువులు మరియు రాయితీ విత్తనాలను పంపిణీ చేస్తున్నామని అధికార వర్గాలు తెలిపాయి...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Live TV & Breaking Banner Card -->
+                <div class="space-y-6">
+                    <div class="bg-brandNavy text-white rounded-2xl p-5 shadow-sm border border-brandNavyDark relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
+                                <h3 class="font-bold text-sm tracking-wide">లైవ్ టీవీ బ్రాడ్‌కాస్ట్</h3>
+                            </div>
+                            <span class="text-xs bg-red-600/80 px-2 py-0.5 rounded font-bold uppercase">24x7 STREAM</span>
+                        </div>
+                        <div class="relative bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center border border-white/10 group cursor-pointer" onclick="switchView('live-tv')">
+                            <img src="https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?w=600" alt="Live TV" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-300">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-brandRed text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                                    <i class="fa-solid fa-play ml-1"></i>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-2 left-2 text-[11px] bg-black/70 px-2 py-0.5 rounded text-white font-semibold">
+                                ప్రత్యక్ష ప్రసారం చూడండి
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-300 mt-3 text-center">
+                            ఆధ్య న్యూస్ ప్రత్యక్ష ప్రసారాల ద్వారా రోజువారీ తాజా వార్తలు పొందండి.
+                        </p>
+                    </div>
+
+                    <!-- Reporter Submission Callout Card -->
+                    <div class="bg-gradient-to-br from-red-50 to-orange-50 border border-red-200 rounded-2xl p-5">
+                        <h4 class="font-bold text-brandRed text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>మీ ప్రాంత వార్తను పంపండి</span>
+                        </h4>
+                        <p class="text-xs text-gray-600 mt-1">
+                            మీ గ్రామం లేదా మండలంలోని సమస్యలు, వార్తలను రిపోర్టర్ పోర్టల్ ద్వారా వెంటనే సమర్పించండి.
+                        </p>
+                        <button onclick="switchView('reporter')" class="mt-3 w-full bg-brandRed hover:bg-brandRedDark text-white text-xs font-bold py-2 rounded-lg transition shadow-sm flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-pen-nib"></i>
+                            <span>వార్తను సమర్పించండి (Submit News)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approved Live News Stream List -->
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-black text-gray-900 border-l-4 border-brandRed pl-2.5">
+                        ఆమోదించిన తాజా వార్తలు (Live News Feed)
+                    </h3>
+                    <span id="feedCount" class="text-xs text-gray-500 font-semibold"></span>
+                </div>
+
+                <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Populated dynamically via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 2: REPORTER DASHBOARD & SUBMISSION    -->
+        <!-- ========================================== -->
+        <div id="viewReporter" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-black text-gray-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-newspaper text-brandRed"></i>
+                            <span>రిపోర్టర్ పోర్టల్ (Reporter Portal)</span>
+                        </h2>
+                        <p class="text-xs text-gray-500 mt-0.5">వార్తలను నమోదు చేయండి మరియు సమర్పించిన వార్తల స్థితిని పర్యవేక్షించండి.</p>
+                    </div>
+
+                    <!-- Reporter Dashboard Mini Tabs -->
+                    <div class="flex space-x-2 bg-gray-100 p-1 rounded-xl text-xs font-bold">
+                        <button onclick="toggleReporterTab('submit')" id="repTabSubmit" class="bg-white text-brandRed px-3 py-1.5 rounded-lg shadow-sm">
+                            <i class="fa-solid fa-plus mr-1"></i> వార్త రాయండి
+                        </button>
+                        <button onclick="toggleReporterTab('status')" id="repTabStatus" class="text-gray-600 hover:text-brandRed px-3 py-1.5 rounded-lg">
+                            <i class="fa-solid fa-list-check mr-1"></i> నా వార్తల స్థితి (<span id="mySubmissionsCount">0</span>)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SUB-TAB A: NEWS SUBMISSION FORM -->
+                <div id="reporterSubmitSection">
+                    <form id="reporterNewsForm" onsubmit="handleReporterSubmit(event)" class="space-y-5">
+                        <!-- Headline -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                వార్తా శీర్షిక (News Headline) *
+                            </label>
+                            <input type="text" id="repTitle" required placeholder="ఉదా: కొడంగల్ లో నూతన రహదారి పనులకు శంకుస్థాపన..." class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandRed">
+                        </div>
+
+                        <!-- Content Body -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                పూర్తి వార్తా వివరాలు (Article Content / Description) *
+                            </label>
+                            <textarea id="repContent" required rows="5" placeholder="సంఘటన స్థలం, వివరాలు, అధికారులు లేదా స్థానికుల ప్రకటనలను ఇక్కడ సమగ్రంగా రాయండి..." class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandRed"></textarea>
+                        </div>
+
+                        <!-- Location Selection Hierarchy -->
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <h4 class="text-xs font-bold text-brandNavy uppercase tracking-wider mb-3 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-location-dot text-brandRed"></i>
+                                <span>ప్రాంత ఎంపిక శ్రేణి (State -> District -> Mandal -> Village)</span>
+                            </h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">1. రాష్ట్రం (State)</label>
+                                    <select id="locState" onchange="onStateChange()" class="w-full text-xs font-medium px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-brandRed">
+                                        <option value="తెలంగాణ">తెలంగాణ</option>
+                                        <option value="ఆంధ్రప్రదేశ్">ఆంధ్రప్రదేశ్</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">2. జిల్లా (District)</label>
+                                    <select id="locDistrict" onchange="onDistrictChange()" class="w-full text-xs font-medium px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-brandRed">
+                                        <!-- dynamic options -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">3. మండలం (Mandal)</label>
+                                    <select id="locMandal" onchange="onMandalChange()" class="w-full text-xs font-medium px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-brandRed">
+                                        <!-- dynamic options -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">4. గ్రామం / వీధి (Village)</label>
+                                    <select id="locVillage" class="w-full text-xs font-medium px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-brandRed">
+                                        <!-- dynamic options -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GPS Auto-Capture & Coordinates -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-blue-50/60 border border-blue-200 rounded-xl">
+                            <div>
+                                <span class="text-xs font-bold text-brandNavy flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-crosshairs text-blue-600"></i>
+                                    <span>రిపోర్టర్ ప్రస్తుత GPS లొకేషన్ (GPS Capture)</span>
+                                </span>
+                                <p id="gpsCoordsText" class="text-xs text-gray-600 mt-0.5">GPS ఇంకా నమోదు చేయలేదు (లొకేషన్ క్లిక్ చేయండి)</p>
+                            </div>
+                            <button type="button" onclick="captureGpsLocation()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm flex items-center justify-center space-x-1.5 flex-shrink-0">
+                                <i class="fa-solid fa-location-crosshairs"></i>
+                                <span>లొకేషన్ తీసుకోండి (Capture GPS)</span>
+                            </button>
+                        </div>
+
+                        <!-- Media Image Upload (Camera / File) -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                                వార్తా చిత్రం / ఫోటో (Upload News Media / Image) *
+                            </label>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <input type="file" id="repMediaFile" accept="image/*" capture="environment" onchange="handleImageSelected(event)" class="text-xs text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
+                                <span class="text-xs text-gray-400">లేదా ఆన్‌లైన్ ఇమేజ్ URL:</span>
+                                <input type="url" id="repMediaUrl" placeholder="https://..." class="flex-1 min-w-[200px] text-xs px-3 py-2 rounded-lg border border-gray-300">
+                            </div>
+                            <!-- Image Preview -->
+                            <div id="imagePreviewBox" class="mt-3 hidden">
+                                <img id="imagePreview" src="" alt="Preview" class="h-32 w-auto object-cover rounded-xl border border-gray-300 shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- Post Meta display at bottom of form -->
+                        <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 text-xs text-gray-600 flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <span class="font-bold text-gray-700">సృష్టించబడిన సమయం:</span>
+                                <span id="currentFormTime" class="ml-1 text-gray-800"></span>
+                            </div>
+                            <div>
+                                <span class="font-bold text-gray-700">హోదా:</span>
+                                <span class="text-amber-600 font-bold ml-1">పెండింగ్ ఆమోదం (Pending Approval by Admin)</span>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full bg-brandRed hover:bg-brandRedDark text-white font-bold py-3 px-4 rounded-xl shadow transition flex items-center justify-center space-x-2 text-sm">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>వార్తను ఆమోదం కోసం సమర్పించండి (Submit News Post)</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- SUB-TAB B: REPORTER STATUS VIEW -->
+                <div id="reporterStatusSection" class="hidden space-y-4">
+                    <div id="reporterArticlesList" class="space-y-3">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 3: ADMIN DASHBOARD (FULL CMS CONTROL) -->
+        <!-- ========================================== -->
+        <div id="viewAdmin" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-6">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h2 class="text-xl font-black text-gray-900">అడ్మిన్ డాష్‌బోర్డ్ (Admin Panel)</h2>
+                            <span class="bg-brandNavy text-brandGold font-black text-[10px] px-2 py-0.5 rounded uppercase">Full Access</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-0.5">వార్తల ఆమోదం, తిరస్కరణ, లైవ్ స్ట్రీమ్ మరియు రిపోర్టర్ల నిర్వహణ.</p>
+                    </div>
+
+                    <!-- Admin Sub-tabs -->
+                    <div class="flex flex-wrap space-x-2 bg-gray-100 p-1 rounded-xl text-xs font-bold">
+                        <button onclick="toggleAdminTab('pending')" id="admTabPending" class="bg-white text-brandRed px-3 py-1.5 rounded-lg shadow-sm">
+                            <i class="fa-solid fa-clock-rotate-left mr-1"></i> పెండింగ్ ఆమోదాలు (<span id="admPendingCount">0</span>)
+                        </button>
+                        <button onclick="toggleAdminTab('all')" id="admTabAll" class="text-gray-600 hover:text-brandRed px-3 py-1.5 rounded-lg">
+                            <i class="fa-solid fa-newspaper mr-1"></i> లైవ్ వార్తలు
+                        </button>
+                        <button onclick="toggleAdminTab('reporters')" id="admTabReporters" class="text-gray-600 hover:text-brandRed px-3 py-1.5 rounded-lg">
+                            <i class="fa-solid fa-users-gear mr-1"></i> రిపోర్టర్ల నిర్వహణ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 1: PENDING APPROVALS LIST -->
+                <div id="adminPendingSection" class="space-y-4">
+                    <div id="adminPendingList" class="space-y-4">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 2: ALL APPROVED LIVE NEWS -->
+                <div id="adminAllSection" class="hidden space-y-4">
+                    <div id="adminAllList" class="space-y-3">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- ADMIN SUB-TAB 3: REPORTERS MANAGEMENT -->
+                <div id="adminReportersSection" class="hidden space-y-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border border-gray-200 rounded-xl overflow-hidden">
+                            <thead class="bg-gray-100 text-gray-700 uppercase font-bold">
+                                <tr>
+                                    <th class="p-3">రిపోర్టర్ పేరు</th>
+                                    <th class="p-3">మొబైల్ నంబర్</th>
+                                    <th class="p-3">కేటాయించిన జిల్లా</th>
+                                    <th class="p-3">స్థితి (Status)</th>
+                                    <th class="p-3">నియంత్రణ (Action)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportersTableBody" class="divide-y divide-gray-200 bg-white">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 4: LIVE TV PLAYER SCREEN              -->
+        <!-- ========================================== -->
+        <div id="viewLiveTv" class="hidden space-y-6">
+            <div class="bg-black rounded-2xl overflow-hidden shadow-xl border border-gray-800">
+                <div class="relative aspect-video w-full flex items-center justify-center bg-gray-950">
+                    <iframe id="liveTvIframe" class="w-full h-full" src="https://www.youtube-nocookie.com/embed/live_stream?channel=AADHYANEWS" title="Aadhya News Live TV" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="p-4 sm:p-6 bg-brandNavy text-white flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                            <h2 class="text-lg font-black tracking-wide">ఆధ్య న్యూస్ ప్రత్యక్ష ప్రసారం (AADHYA NEWS LIVE)</h2>
+                        </div>
+                        <p class="text-xs text-gray-300 mt-1">24 గంటల వార్తా ప్రసారాలు • నిష్పాక్షిక వార్తలు • ప్రజల పక్షం</p>
+                    </div>
+                    <button onclick="switchView('feed')" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-4 py-2 rounded-lg border border-white/20 transition">
+                        <i class="fa-solid fa-arrow-left mr-1.5"></i> వార్తలకు వెళ్ళండి
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brandNavy text-gray-300 text-xs mt-auto border-t border-brandNavyDark">
+        <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="space-y-2">
+                <div class="flex items-center space-x-2 text-white font-black text-lg">
+                    <span class="w-8 h-8 rounded bg-brandRed flex items-center justify-center text-sm font-bold">AN</span>
+                    <span>ఆధ్య న్యూస్</span>
+                </div>
+                <p class="text-gray-400 leading-relaxed">
+                    ప్రజల గొంతుక... ప్రజల వార్త... తెలంగాణ మరియు ఆంధ్రప్రదేశ్ సమగ్ర వార్తా వేదిక.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-2">ముఖ్య విభాగాలు</h4>
+                <ul class="space-y-1.5 text-gray-400">
+                    <li><a href="#" onclick="filterCategory('తెలంగాణ')" class="hover:text-white">తెలంగాణ వార్తలు</a></li>
+                    <li><a href="#" onclick="filterCategory('ఆంధ్రప్రదేశ్')" class="hover:text-white">ఆంధ్రప్రదేశ్ వార్తలు</a></li>
+                    <li><a href="#" onclick="filterCategory('నారాయణపేట')" class="hover:text-white">నారాయణపేట & పాలమూరు</a></li>
+                    <li><a href="#" onclick="switchView('live-tv')" class="hover:text-white">లైవ్ టీవీ బ్రాడ్‌కాస్ట్</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-2">రిపోర్టర్ & అడ్మిన్</h4>
+                <ul class="space-y-1.5 text-gray-400">
+                    <li><a href="#" onclick="openModal('loginModal')" class="hover:text-white">రిపోర్టర్ లాగిన్</a></li>
+                    <li><a href="#" onclick="switchView('reporter')" class="hover:text-white">వార్త రాయండి</a></li>
+                    <li><a href="#" onclick="openModal('permissionsModal')" class="hover:text-white">యాప్ అనుమతులు</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-2">కార్యాలయం & సంప్రదింపులు</h4>
+                <p class="text-gray-400">హైదరాబాద్ / పాలమూరు, తెలంగాణ</p>
+                <p class="text-gray-400 mt-1">ఇమెయిల్: srisahasramedicals@gmail.com</p>
+                <p class="text-gray-400">ఫోన్: +91 94400 12345</p>
+            </div>
+        </div>
+        <div class="border-t border-white/10 py-4 text-center text-gray-500 text-[11px]">
+            © 2026 AADHYA NEWS. సర్వ హక్కులు ప్రత్యేకించబడినవి.
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- MODAL 1: PHONE NUMBER & OTP LOGIN MODAL    -->
+    <!-- ========================================== -->
+    <div id="loginModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 relative">
+            <button onclick="closeModal('loginModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 bg-brandRed rounded-xl text-white font-black text-xl flex items-center justify-center mx-auto mb-2 shadow">
+                    AN
+                </div>
+                <h3 class="text-lg font-black text-gray-900">ఆధ్య న్యూస్ పోర్టల్ లాగిన్</h3>
+                <p class="text-xs text-gray-500 mt-0.5">మొబైల్ OTP ద్వారా రిపోర్టర్ లేదా అడ్మిన్ గా లాగిన్ అవ్వండి</p>
+            </div>
+
+            <!-- Role Selector -->
+            <div class="flex rounded-xl bg-gray-100 p-1 mb-4 text-xs font-bold">
+                <button type="button" onclick="setLoginRole('reporter')" id="roleBtnReporter" class="flex-1 py-2 rounded-lg bg-brandRed text-white shadow-sm transition">
+                    <i class="fa-solid fa-user mr-1"></i> రిపోర్టర్ (Reporter)
+                </button>
+                <button type="button" onclick="setLoginRole('admin')" id="roleBtnAdmin" class="flex-1 py-2 rounded-lg text-gray-600 hover:text-brandNavy transition">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> అడ్మిన్ (Admin)
+                </button>
+            </div>
+
+            <!-- Step 1: Phone Entry -->
+            <div id="loginStepPhone" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">పూర్తి పేరు (Full Name) *</label>
+                    <input type="text" id="loginName" placeholder="ఉదా: శ్రీనివాస్ రెడ్డి" class="w-full text-sm px-3.5 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandRed">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">మొబైల్ నంబర్ (10-Digit Mobile) *</label>
+                    <div class="flex">
+                        <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-gray-300 bg-gray-100 text-gray-600 text-xs font-bold">+91</span>
+                        <input type="tel" id="loginPhone" maxlength="10" placeholder="9876543210" class="flex-1 text-sm px-3.5 py-2 rounded-r-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandRed">
+                    </div>
+                </div>
+
+                <div id="adminPinField" class="hidden">
+                    <label class="block text-xs font-bold text-gray-700 mb-1">అడ్మిన్ సెక్యూరిటీ పిన్ (Default: 94400) *</label>
+                    <input type="password" id="loginPin" placeholder="94400" class="w-full text-sm px-3.5 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandNavy">
+                </div>
+
+                <button type="button" onclick="sendOtp()" class="w-full bg-brandRed hover:bg-brandRedDark text-white font-bold py-2.5 rounded-xl shadow text-sm transition">
+                    OTP కోడ్ పొందండి (Send OTP)
+                </button>
+            </div>
+
+            <!-- Step 2: OTP Verification -->
+            <div id="loginStepOtp" class="hidden space-y-4">
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800">
+                    <p class="font-bold">ధృవీకరణ కోడ్:</p>
+                    <p class="mt-0.5 text-amber-900 font-mono text-sm">మీ OTP: <strong id="generatedOtpBadge" class="text-base text-brandRed"></strong></p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">6 అంకెల OTP నమోదు చేయండి</label>
+                    <input type="text" id="enteredOtp" maxlength="6" placeholder="123456" class="w-full text-center tracking-widest text-lg font-mono font-bold px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandRed">
+                </div>
+
+                <button type="button" onclick="verifyOtpAndLogin()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl shadow text-sm transition">
+                    ధృవీకరించి లాగిన్ అవ్వండి (Verify & Log In)
+                </button>
+
+                <div class="flex items-center justify-between text-xs text-gray-500 pt-1">
+                    <button type="button" onclick="resetLoginSteps()" class="text-brandNavy hover:underline">నంబర్ మార్చండి</button>
+                    <button type="button" onclick="sendOtp()" class="text-brandRed hover:underline font-bold">మళ్ళీ పంపండి (Resend)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL 2: APP MANDATORY PERMISSIONS PROMPT  -->
+    <!-- ========================================== -->
+    <div id="permissionsModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100">
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-red-100 text-brandRed flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-black text-gray-900">యాప్ అనుమతుల అభ్యర్థన</h3>
+                    <p class="text-xs text-gray-500">ఆధ్య న్యూస్ సేవలు సజావుగా పొందడానికి</p>
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-600 leading-relaxed mb-4">
+                రిపోర్టర్లు వార్తలు సమర్పించడానికి మరియు ప్రత్యక్ష వార్తా హెచ్చరికలను పొందడానికి క్రింది అనుమతులు అవసరం:
+            </p>
+
+            <div class="space-y-3 mb-5">
+                <div class="flex items-start space-x-3 p-2.5 bg-gray-50 rounded-xl">
+                    <i class="fa-solid fa-location-dot text-brandRed mt-0.5 text-sm"></i>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-800">GPS లొకేషన్</h4>
+                        <p class="text-[11px] text-gray-500">వార్త జరిగిన జిల్లా, మండలం, గ్రామాన్ని ఆటోమేటిక్‌గా ధృవీకరించడానికి.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3 p-2.5 bg-gray-50 rounded-xl">
+                    <i class="fa-solid fa-camera text-brandNavy mt-0.5 text-sm"></i>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-800">కెమెరా & గ్యాలరీ</h4>
+                        <p class="text-[11px] text-gray-500">సంఘటన స్థలం నుండి ఫోటోలు తీసి నేరుగా అప్‌లోడ్ చేయడానికి.</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3 p-2.5 bg-gray-50 rounded-xl">
+                    <i class="fa-solid fa-bell text-amber-600 mt-0.5 text-sm"></i>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-800">నోటిఫికేషన్లు</h4>
+                        <p class="text-[11px] text-gray-500">ముఖ్యమైన బ్రేకింగ్ న్యూస్ హెచ్చరికలను తక్షణమే పొందడానికి.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex space-x-3">
+                <button onclick="grantAllPermissions()" class="flex-1 bg-brandRed hover:bg-brandRedDark text-white text-xs font-bold py-2.5 rounded-xl transition shadow">
+                    అనుమతించండి (Allow)
+                </button>
+                <button onclick="closeModal('permissionsModal')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-4 py-2.5 rounded-xl transition">
+                    తరువాత (Later)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL 3: ARTICLE DETAIL VIEW MODAL         -->
+    <!-- ========================================== -->
+    <div id="articleModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto relative">
+            <button onclick="closeModal('articleModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span id="detailBadge" class="bg-brandRed text-white text-[11px] font-bold px-2 py-0.5 rounded">వార్త</span>
+            <h2 id="detailTitle" class="text-xl sm:text-2xl font-black text-gray-900 mt-2 leading-snug"></h2>
+            <div class="flex flex-wrap items-center gap-3 text-xs text-gray-500 my-3">
+                <span id="detailAuthor"><i class="fa-solid fa-user-pen mr-1"></i></span>
+                <span id="detailTime"><i class="fa-regular fa-clock mr-1"></i></span>
+                <span id="detailLocation"><i class="fa-solid fa-location-dot mr-1"></i></span>
+            </div>
+            <img id="detailImage" src="" alt="News Image" class="w-full h-64 object-cover rounded-xl my-4">
+            <p id="detailContent" class="text-sm text-gray-700 leading-relaxed whitespace-pre-line"></p>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- CORE JAVASCRIPT APPLICATION LOGIC          -->
+    <!-- ========================================== -->
+    <script>
+        // State -> District -> Mandal -> Village Hierarchy Data (Telugu)
+        const locationData = {
+            "తెలంగాణ": {
+                "నారాయణపేట": {
+                    "నారాయణపేట": ["నారాయణపేట టౌన్", "సింగారం", "బోయినపల్లి", "అప్పక్‌పల్లి"],
+                    "దామరగిద్ద": ["దామరగిద్ద సెంటర్", "అనాసాగూర్", "వట్పల్లి", "మల్కాపూర్"],
+                    "ధన్వాడ": ["ధన్వాడ ప్రధాన కేంద్రం", "కొండాపూర్", "రామకిష్టాపూర్"],
+                    "మద్దూరు": ["మద్దూరు మెయిన్", "దోరేపల్లి", "నిధానపురం"]
+                },
+                "మహబూబ్ నగర్": {
+                    "మహబూబ్ నగర్ టౌన్": ["క్లాక్ టవర్", "షాషాబ్ గుట్ట", "రూరల్", "బీజేఆర్ కాలనీ"],
+                    "జడ్చర్ల": ["జడ్చర్ల టౌన్", "బాదేపల్లి", "గంగాపూర్", "నాగసాల"],
+                    "భూత్పూర్": ["భూత్పూర్ సెంటర్", "అమిస్తాపూర్", "తాటికొండ"]
+                },
+                "కొడంగల్": {
+                    "కొడంగల్": ["కొడంగల్ మెయిన్", "టేకులకోడ్", "అప్పాయిపల్లి", "రుద్రారం"],
+                    "బొంరాస్‌పేట": ["బొంరాస్‌పేట టౌన్", "మహంతిపూర్", "తుర్కఎంజాల్"],
+                    "దౌల్తాబాద్": ["దౌల్తాబాద్ సెంటర్", "తిర్మలాపూర్", "చెల్లంపల్లి"]
+                },
+                "హైదరాబాద్": {
+                    "ఖైరతాబాద్": ["ఖైరతాబాద్ జంక్షన్", "పంజాగుట్ట", "సోమాజిగూడ"],
+                    "చార్మినార్": ["లాడ్ బజార్", "మక్కా మసీదు", "పత్తర్‌గట్టి"],
+                    "జూబ్లీహిల్స్": ["రోడ్ నం 36", "ఫిలింనగర్", "చెక్ పోస్ట్"]
+                }
+            },
+            "ఆంధ్రప్రదేశ్": {
+                "విజయవాడ (ఎన్టీఆర్)": {
+                    "విజయవాడ అర్బన్": ["బెంజ్ సర్కిల్", "గాంధీనగర్", "గవర్నర్‌పేట"],
+                    "మైలవరం": ["మైలవరం సెంటర్", "చంద్రాలపాడు", "పుల్లూరు"]
+                },
+                "విశాఖపట్నం": {
+                    "గాజువాక": ["గాజువాక జంక్షన్", "శ్రీనగర్", "కూర్మన్నపాలెం"],
+                    "భీమునిపట్నం": ["బీచ్ రోడ్డు", "తగరపువలస", "చిట్టివలస"]
+                },
+                "తిరుపతి": {
+                    "తిరుపతి అర్బన్": ["రైల్వే స్టేషన్ ఏరియా", "అలిపిరి", "బైపాస్ రోడ్"],
+                    "చంద్రగిరి": ["చంద్రగిరి కోట", "నరసింగాపురం", "శేషాపురం"]
+                }
+            }
+        };
+
+        // Initial default articles
+        const defaultArticles = [
+            {
+                id: "art_1",
+                titleTe: "నారాయణపేట జిల్లాలో రైతులకు నాణ్యమైన విత్తనాలు, ఎరువుల పంపిణీ వేగవంతం",
+                contentTe: "వ్యవసాయ రంగంలో రైతుల సంక్షేమానికి రాష్ట్ర ప్రభుత్వం కట్టుబడి ఉందని, ప్రతి రైతుకు అందుబాటులో ఉండేలా వ్యవసాయ శాఖ ద్వారా అవసరమైన ఎరువులు మరియు రాయితీ విత్తనాలను పంపిణీ చేస్తున్నామని అధికార వర్గాలు తెలిపాయి. రైతులు ఎలాంటి ఇబ్బందులు పడకుండా ప్రత్యేక కౌంటర్లు ఏర్పాటు చేయాలని కలెక్టర్ ఆదేశించారు.",
+                imageUrl: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800",
+                authorName: "ఆధ్య ప్రతినిధి",
+                reporterPhone: "+91 9440012345",
+                state: "తెలంగాణ",
+                districtId: "నారాయణపేట",
+                mandal: "నారాయణపేట",
+                village: "సింగారం",
+                gpsCoordinates: "16.7488° N, 77.4919° E",
+                status: "approved",
+                viewCount: 1420,
+                formattedDateTime: "25 అక్టోబర్ 2026, 11:30 AM"
+            },
+            {
+                id: "art_2",
+                titleTe: "కొడంగల్ నియోజకవర్గంలో రూ. 50 కోట్ల అభివృద్ధి పనుల సమీక్ష",
+                contentTe: "కొడంగల్ పరిధిలోని వివిధ గ్రామాలలో చేపట్టిన రహదారులు, మిషన్ భగీరథ నీటి సరఫరా, పాఠశాలల ఆధునికీకరణ పనులను ఉన్నతాధికారులు పరిశీలించారు. నిర్దేశిత గడువులోగా పనులను పూర్తి చేయాలని కాంట్రాక్టర్లకు స్పష్టం చేశారు.",
+                imageUrl: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800",
+                authorName: "రాజేందర్ (రిపోర్టర్)",
+                reporterPhone: "+91 9848011223",
+                state: "తెలంగాణ",
+                districtId: "కొడంగల్",
+                mandal: "కొడంగల్",
+                village: "రుద్రారం",
+                gpsCoordinates: "17.1120° N, 77.6250° E",
+                status: "approved",
+                viewCount: 980,
+                formattedDateTime: "25 అక్టోబర్ 2026, 09:15 AM"
+            },
+            {
+                id: "art_3",
+                titleTe: "పాలమూరు రంగారెడ్డి ఎత్తిపోతల ప్రాజెక్టు పనులను ముమ్మరం చేసిన ప్రభుత్వం",
+                contentTe: "ఉమ్మడి మహబూబ్ నగర్ జిల్లాకు తాగు, సాగునీరు అందించే మహత్తర ప్రాజెక్ట్ పనులు శరవేగంగా కొనసాగుతున్నాయి. రైతాంగంలో హర్షాతిరేకాలు వ్యక్తమవుతున్నాయి.",
+                imageUrl: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=800",
+                authorName: "మహేష్ బాబు",
+                reporterPhone: "+91 9988776655",
+                state: "తెలంగాణ",
+                districtId: "మహబూబ్ నగర్",
+                mandal: "జడ్చర్ల",
+                village: "బాదేపల్లి",
+                gpsCoordinates: "16.7725° N, 78.1340° E",
+                status: "approved",
+                viewCount: 760,
+                formattedDateTime: "24 అక్టోబర్ 2026, 04:45 PM"
+            }
+        ];
+
+        // Global State (LocalStorage persistent)
+        let articles = JSON.parse(localStorage.getItem('aadhya_articles')) || defaultArticles;
+        let currentUser = JSON.parse(localStorage.getItem('aadhya_user')) || null;
+        let reporters = JSON.parse(localStorage.getItem('aadhya_reporters')) || [
+            { name: "శ్రీనివాస్ రెడ్డి", phone: "+91 9440012345", assignedDistrict: "నారాయణపేట", status: "active" },
+            { name: "రాజేందర్ గౌడ్", phone: "+91 9848011223", assignedDistrict: "కొడంగల్", status: "active" },
+            { name: "మహేష్ వర్మ", phone: "+91 9988776655", assignedDistrict: "మహబూబ్ నగర్", status: "active" }
+        ];
+
+        let loginRoleSelected = "reporter";
+        let generatedOtp = "123456";
+        let capturedGpsCoords = "";
+        let uploadedBase64Image = "";
+
+        // On Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            initLocationDropdowns();
+            renderFeedArticles();
+            updateAuthHeader();
+            updateCounts();
+            document.getElementById('currentFormTime').innerText = new Date().toLocaleString('te-IN');
+
+            // Prompt permissions once if never shown
+            if (!localStorage.getItem('aadhya_permissions_prompted')) {
+                setTimeout(() => openModal('permissionsModal'), 1500);
+            }
+        });
+
+        function saveArticles() {
+            localStorage.setItem('aadhya_articles', JSON.stringify(articles));
+            renderFeedArticles();
+            renderReporterStatus();
+            renderAdminLists();
+            updateCounts();
+        }
+
+        function updateCounts() {
+            const pending = articles.filter(a => a.status === 'pending');
+            const approved = articles.filter(a => a.status === 'approved');
+            document.getElementById('admPendingCount').innerText = pending.length;
+            document.getElementById('feedCount').innerText = `మొత్తం: ${approved.length} వార్తలు`;
+
+            if (currentUser && currentUser.phone) {
+                const myCount = articles.filter(a => a.reporterPhone === currentUser.phone).length;
+                document.getElementById('mySubmissionsCount').innerText = myCount;
+            }
+        }
+
+        // View Navigation
+        function switchView(viewName) {
+            ['viewFeed', 'viewReporter', 'viewAdmin', 'viewLiveTv'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            ['navTabFeed', 'navTabReporter', 'navTabAdmin'].forEach(id => {
+                document.getElementById(id).className = 'text-gray-600 hover:text-brandRed pb-2 px-1 flex items-center space-x-1.5 whitespace-nowrap';
+            });
+
+            if (viewName === 'feed') {
+                document.getElementById('viewFeed').classList.remove('hidden');
+                document.getElementById('navTabFeed').className = 'tab-active pb-2 px-1 flex items-center space-x-1.5 whitespace-nowrap';
+                renderFeedArticles();
+            } else if (viewName === 'reporter') {
+                document.getElementById('viewReporter').classList.remove('hidden');
+                document.getElementById('navTabReporter').className = 'tab-active pb-2 px-1 flex items-center space-x-1.5 whitespace-nowrap';
+                renderReporterStatus();
+            } else if (viewName === 'admin') {
+                document.getElementById('viewAdmin').classList.remove('hidden');
+                document.getElementById('navTabAdmin').className = 'tab-active pb-2 px-1 flex items-center space-x-1.5 whitespace-nowrap';
+                renderAdminLists();
+            } else if (viewName === 'live-tv') {
+                document.getElementById('viewLiveTv').classList.remove('hidden');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Render Live News Feed (Only status == 'approved')
+        function renderFeedArticles(filterDist = 'all') {
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = '';
+
+            let list = articles.filter(a => a.status === 'approved');
+            if (filterDist !== 'all') {
+                list = list.filter(a => a.districtId === filterDist || a.state === filterDist || a.titleTe.includes(filterDist));
+            }
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-gray-500">
+                        <i class="fa-solid fa-newspaper text-4xl text-gray-300 mb-2"></i>
+                        <p class="font-bold">ఈ విభాగంలో వార్తలు లేవు.</p>
+                    </div>`;
+                return;
+            }
+
+            list.forEach(art => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer flex flex-col";
+                card.onclick = () => openArticleDetail(art.id);
+                card.innerHTML = `
+                    <div class="relative h-44 w-full overflow-hidden bg-gray-100">
+                        <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800'}" alt="News" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-brandRed text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+                            ${art.districtId || 'తాజా వార్త'}
+                        </span>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] text-gray-500 mb-2">
+                                <span><i class="fa-solid fa-user-pen text-brandRed mr-1"></i> ${art.authorName || 'ఆధ్య ప్రతినిధి'}</span>
+                                <span><i class="fa-regular fa-clock mr-1"></i> ${art.formattedDateTime || 'ఇప్పుడే'}</span>
+                            </div>
+                            <h4 class="font-bold text-gray-900 text-sm leading-snug line-clamp-2 mb-2">
+                                ${art.titleTe}
+                            </h4>
+                            <p class="text-xs text-gray-600 line-clamp-3">
+                                ${art.contentTe}
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+                            <span class="flex items-center space-x-1">
+                                <i class="fa-solid fa-location-dot text-brandNavy"></i>
+                                <span class="text-gray-600 font-medium">${art.mandal || art.districtId}</span>
+                            </span>
+                            <span class="text-brandRed font-semibold">చదవండి →</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat) {
+            renderFeedArticles(cat);
+        }
+
+        function openArticleDetail(id) {
+            const art = articles.find(a => a.id === id);
+            if (!art) return;
+            document.getElementById('detailTitle').innerText = art.titleTe;
+            document.getElementById('detailContent').innerText = art.contentTe;
+            document.getElementById('detailImage').src = art.imageUrl;
+            document.getElementById('detailAuthor').innerHTML = `<i class="fa-solid fa-user-pen mr-1"></i> ${art.authorName}`;
+            document.getElementById('detailTime').innerHTML = `<i class="fa-regular fa-clock mr-1"></i> ${art.formattedDateTime}`;
+            document.getElementById('detailLocation').innerHTML = `<i class="fa-solid fa-location-dot mr-1"></i> ${art.state} > ${art.districtId} > ${art.mandal || ''} ${art.village ? '> ' + art.village : ''}`;
+            openModal('articleModal');
+        }
+
+        // Location Dropdowns
+        function initLocationDropdowns() {
+            const stateSel = document.getElementById('locState');
+            stateSel.value = "తెలంగాణ";
+            onStateChange();
+        }
+
+        function onStateChange() {
+            const state = document.getElementById('locState').value;
+            const distSel = document.getElementById('locDistrict');
+            distSel.innerHTML = '';
+            const districts = Object.keys(locationData[state] || {});
+            districts.forEach(d => {
+                const opt = document.createElement('option');
+                opt.value = d;
+                opt.innerText = d;
+                distSel.appendChild(opt);
+            });
+            onDistrictChange();
+        }
+
+        function onDistrictChange() {
+            const state = document.getElementById('locState').value;
+            const dist = document.getElementById('locDistrict').value;
+            const mandalSel = document.getElementById('locMandal');
+            mandalSel.innerHTML = '';
+            const mandals = Object.keys((locationData[state] && locationData[state][dist]) || {});
+            mandals.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.innerText = m;
+                mandalSel.appendChild(opt);
+            });
+            onMandalChange();
+        }
+
+        function onMandalChange() {
+            const state = document.getElementById('locState').value;
+            const dist = document.getElementById('locDistrict').value;
+            const mandal = document.getElementById('locMandal').value;
+            const villageSel = document.getElementById('locVillage');
+            villageSel.innerHTML = '';
+            const villages = (locationData[state] && locationData[state][dist] && locationData[state][dist][mandal]) || ["ప్రధాన కేంద్రం", "గ్రామం 1", "గ్రామం 2"];
+            villages.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v;
+                opt.innerText = v;
+                villageSel.appendChild(opt);
+            });
+        }
+
+        // GPS Location capture via browser Geolocation API
+        function captureGpsLocation() {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        const lat = pos.coords.latitude.toFixed(4);
+                        const lon = pos.coords.longitude.toFixed(4);
+                        capturedGpsCoords = `${lat}° N, ${lon}° E`;
+                        document.getElementById('gpsCoordsText').innerHTML = `<span class="text-green-600 font-bold"><i class="fa-solid fa-circle-check"></i> GPS ధృవీకరించబడింది: ${capturedGpsCoords}</span>`;
+                    },
+                    err => {
+                        capturedGpsCoords = "16.7488° N, 77.4919° E (నారాయణపేట లొకేషన్)";
+                        document.getElementById('gpsCoordsText').innerHTML = `<span class="text-brandNavy font-semibold">${capturedGpsCoords}</span>`;
+                    }
+                );
+            } else {
+                capturedGpsCoords = "16.7488° N, 77.4919° E";
+                document.getElementById('gpsCoordsText').innerText = capturedGpsCoords;
+            }
+        }
+
+        // Image file selection handler
+        function handleImageSelected(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    uploadedBase64Image = ev.target.result;
+                    document.getElementById('imagePreview').src = uploadedBase64Image;
+                    document.getElementById('imagePreviewBox').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Handle Reporter Form Submit
+        function handleReporterSubmit(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('repTitle').value.trim();
+            const content = document.getElementById('repContent').value.trim();
+            const state = document.getElementById('locState').value;
+            const dist = document.getElementById('locDistrict').value;
+            const mandal = document.getElementById('locMandal').value;
+            const village = document.getElementById('locVillage').value;
+            const urlImg = document.getElementById('repMediaUrl').value.trim();
+
+            const finalImage = uploadedBase64Image || urlImg || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';
+            const now = new Date().toLocaleString('te-IN');
+
+            const newArticle = {
+                id: "art_" + Date.now(),
+                titleTe: title,
+                contentTe: content,
+                state: state,
+                districtId: dist,
+                mandal: mandal,
+                village: village,
+                gpsCoordinates: capturedGpsCoords || "16.7488° N, 77.4919° E",
+                imageUrl: finalImage,
+                authorName: currentUser ? currentUser.name : "రిపోర్టర్",
+                reporterPhone: currentUser ? currentUser.phone : "+91 9440012345",
+                status: "pending",
+                rejectionReason: "",
+                formattedDateTime: now
+            };
+
+            articles.unshift(newArticle);
+            saveArticles();
+
+            alert("మీ వార్త విజయవంతంగా సమర్పించబడింది! అడ్మిన్ ఆమోదం కోసం పంపబడింది.");
+            document.getElementById('reporterNewsForm').reset();
+            document.getElementById('imagePreviewBox').classList.add('hidden');
+            uploadedBase64Image = "";
+
+            toggleReporterTab('status');
+        }
+
+        // Reporter Sub-tabs
+        function toggleReporterTab(tab) {
+            if (tab === 'submit') {
+                document.getElementById('reporterSubmitSection').classList.remove('hidden');
+                document.getElementById('reporterStatusSection').classList.add('hidden');
+                document.getElementById('repTabSubmit').className = "bg-white text-brandRed px-3 py-1.5 rounded-lg shadow-sm";
+                document.getElementById('repTabStatus').className = "text-gray-600 hover:text-brandRed px-3 py-1.5 rounded-lg";
+            } else {
+                document.getElementById('reporterSubmitSection').classList.add('hidden');
+                document.getElementById('reporterStatusSection').classList.remove('hidden');
+                document.getElementById('repTabSubmit').className = "text-gray-600 hover:text-brandRed px-3 py-1.5 rounded-lg";
+                document.getElementById('repTabStatus').className = "bg-white text-brandRed px-3 py-1.5 rounded-lg shadow-sm";
+                renderReporterStatus();
+            }
+        }
+
+        // Render Reporter's Submissions List
+        function renderReporterStatus() {
+            const container = document.getElementById('reporterArticlesList');
+            container.innerHTML = '';
+
+            const phone = currentUser ? currentUser.phone : "+91 9440012345";
+            const myArticles = articles.filter(a => a.reporterPhone === phone || !currentUser);
+
+            if (myArticles.length === 0) {
+                container.innerHTML = `
+                    <div class="py-12 text-center text-gray-500">
+                        <i class="fa-solid fa-hourglass-start text-3xl text-gray-300 mb-2"></i>
+                        <p class="font-bold">మీరు ఇంకా వార్తలను సమర్పించలేదు.</p>
+                    </div>`;
+                return;
+            }
+
+            myArticles.forEach(art => {
+                let statusBadge = '';
+                if (art.status === 'approved') {
+                    statusBadge = `<span class="bg-green-100 text-green-700 font-bold px-2.5 py-0.5 rounded text-[11px]"><i class="fa-solid fa-circle-check mr-1"></i> ఆమోదించబడింది (Approved & Live)</span>`;
+                } else if (art.status === 'rejected') {
+                    statusBadge = `<span class="bg-red-100 text-red-700 font-bold px-2.5 py-0.5 rounded text-[11px]"><i class="fa-solid fa-circle-xmark mr-1"></i> తిరస్కరించబడింది (Rejected)</span>`;
+                } else {
+                    statusBadge = `<span class="bg-amber-100 text-amber-700 font-bold px-2.5 py-0.5 rounded text-[11px]"><i class="fa-solid fa-clock mr-1"></i> పెండింగ్ ఆమోదం (Pending)</span>`;
+                }
+
+                const item = document.createElement('div');
+                item.className = "p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col sm:flex-row gap-4 justify-between items-start";
+                item.innerHTML = `
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2 mb-2">
+                            ${statusBadge}
+                            <span class="text-xs text-gray-400">• ${art.formattedDateTime}</span>
+                        </div>
+                        <h4 class="font-bold text-gray-900 text-sm mb-1">${art.titleTe}</h4>
+                        <p class="text-xs text-gray-600 line-clamp-2">${art.contentTe}</p>
+                        <div class="mt-2 text-[11px] text-gray-500 flex items-center space-x-3">
+                            <span><i class="fa-solid fa-location-dot mr-1"></i> ${art.state} > ${art.districtId} > ${art.mandal} > ${art.village}</span>
+                            ${art.gpsCoordinates ? `<span><i class="fa-solid fa-crosshairs mr-1"></i> GPS: ${art.gpsCoordinates}</span>` : ''}
+                        </div>
+                        ${art.status === 'rejected' && art.rejectionReason ? `
+                            <div class="mt-2 p-2 bg-red-50 border border-red-100 rounded text-xs text-red-700">
+                                <strong>కారణం:</strong> ${art.rejectionReason}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <img src="${art.imageUrl}" alt="Thumb" class="w-20 h-20 object-cover rounded-lg border border-gray-200 flex-shrink-0">
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Admin Sub-tabs
+        function toggleAdminTab(tab) {
+            ['adminPendingSection', 'adminAllSection', 'adminReportersSection'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            ['admTabPending', 'admTabAll', 'admTabReporters'].forEach(id => {
+                document.getElementById(id).className = "text-gray-600 hover:text-brandRed px-3 py-1.5 rounded-lg";
+            });
+
+            if (tab === 'pending') {
+                document.getElementById('adminPendingSection').classList.remove('hidden');
+                document.getElementById('admTabPending').className = "bg-white text-brandRed px-3 py-1.5 rounded-lg shadow-sm";
+            } else if (tab === 'all') {
+                document.getElementById('adminAllSection').classList.remove('hidden');
+                document.getElementById('admTabAll').className = "bg-white text-brandRed px-3 py-1.5 rounded-lg shadow-sm";
+            } else if (tab === 'reporters') {
+                document.getElementById('adminReportersSection').classList.remove('hidden');
+                document.getElementById('admTabReporters').className = "bg-white text-brandRed px-3 py-1.5 rounded-lg shadow-sm";
+            }
+            renderAdminLists();
+        }
+
+        // Render Admin Lists
+        function renderAdminLists() {
+            // 1. Pending Approvals
+            const pendingList = document.getElementById('adminPendingList');
+            pendingList.innerHTML = '';
+            const pending = articles.filter(a => a.status === 'pending');
+
+            if (pending.length === 0) {
+                pendingList.innerHTML = `
+                    <div class="py-12 text-center text-gray-500">
+                        <i class="fa-solid fa-circle-check text-4xl text-green-500 mb-2"></i>
+                        <p class="font-bold text-gray-700">పెండింగ్ ఆమోదాలు ఏవీ లేవు!</p>
+                        <p class="text-xs text-gray-400 mt-1">రిపోర్టర్లు కొత్త వార్తలు సమర్పించినప్పుడు ఇక్కడ కనిపిస్తాయి.</p>
+                    </div>`;
+            } else {
+                pending.forEach(art => {
+                    const row = document.createElement('div');
+                    row.className = "p-5 bg-white rounded-xl border border-gray-200 shadow-sm flex flex-col lg:flex-row gap-4 justify-between";
+                    row.innerHTML = `
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
+                                <span class="bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded text-[11px]">పెండింగ్ వార్త</span>
+                                <span class="text-xs text-gray-500"><i class="fa-solid fa-user text-brandNavy mr-1"></i> ${art.authorName} (${art.reporterPhone})</span>
+                                <span class="text-xs text-gray-400">• ${art.formattedDateTime}</span>
+                            </div>
+                            <h4 class="text-base font-bold text-gray-900 mb-1">${art.titleTe}</h4>
+                            <p class="text-xs text-gray-700 mb-2">${art.contentTe}</p>
+                            <div class="text-[11px] text-gray-500 flex flex-wrap gap-3">
+                                <span><i class="fa-solid fa-location-dot text-brandRed mr-1"></i> ${art.state} > ${art.districtId} > ${art.mandal} > ${art.village}</span>
+                                ${art.gpsCoordinates ? `<span><i class="fa-solid fa-crosshairs text-blue-600 mr-1"></i> GPS: ${art.gpsCoordinates}</span>` : ''}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-end justify-between gap-3">
+                            <img src="${art.imageUrl}" alt="News Image" class="w-24 h-24 object-cover rounded-xl border border-gray-200">
+                            <div class="flex space-x-2">
+                                <button onclick="adminRejectArticle('${art.id}')" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-3 py-1.5 rounded-lg text-xs transition border border-red-200">
+                                    <i class="fa-solid fa-xmark mr-1"></i> తిరస్కరించు
+                                </button>
+                                <button onclick="adminApproveArticle('${art.id}')" class="bg-green-600 hover:bg-green-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition shadow-sm">
+                                    <i class="fa-solid fa-check mr-1"></i> ఆమోదించు (Publish)
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    pendingList.appendChild(row);
+                });
+            }
+
+            // 2. All Live Articles
+            const allList = document.getElementById('adminAllList');
+            allList.innerHTML = '';
+            articles.filter(a => a.status === 'approved').forEach(art => {
+                const item = document.createElement('div');
+                item.className = "p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-between text-xs";
+                item.innerHTML = `
+                    <div class="flex items-center space-x-3 flex-1 mr-4">
+                        <img src="${art.imageUrl}" class="w-12 h-12 object-cover rounded-lg border">
+                        <div>
+                            <h5 class="font-bold text-gray-900 text-sm line-clamp-1">${art.titleTe}</h5>
+                            <span class="text-gray-500">${art.districtId} • వీక్షణలు: ${art.viewCount || 0}</span>
+                        </div>
+                    </div>
+                    <button onclick="deleteArticle('${art.id}')" class="text-red-500 hover:text-red-700 p-2 font-bold" title="తొలగించు">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                allList.appendChild(item);
+            });
+
+            // 3. Reporters Table
+            const tbody = document.getElementById('reportersTableBody');
+            tbody.innerHTML = '';
+            reporters.forEach((rep, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-gray-900">${rep.name}</td>
+                    <td class="p-3 text-gray-600 font-mono">${rep.phone}</td>
+                    <td class="p-3 text-gray-600">${rep.assignedDistrict}</td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${rep.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                            ${rep.status === 'active' ? 'యాక్టివ్' : 'నిలిపివేయబడింది'}
+                        </span>
+                    </td>
+                    <td class="p-3">
+                        <button onclick="toggleReporterAccess(${idx})" class="text-xs font-bold ${rep.status === 'active' ? 'text-red-600 hover:underline' : 'text-green-600 hover:underline'}">
+                            ${rep.status === 'active' ? 'యాక్సెస్ ఆపు' : 'యాక్టివేట్ చేయి'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Admin Actions: Approve, Reject, Delete
+        function adminApproveArticle(id) {
+            const art = articles.find(a => a.id === id);
+            if (art) {
+                art.status = 'approved';
+                saveArticles();
+                alert("వార్త ఆమోదించబడింది! లైవ్ ఫీడ్‌లో ప్రచురించబడింది.");
+            }
+        }
+
+        function adminRejectArticle(id) {
+            const reason = prompt("తిరస్కరణ కారణాన్ని నమోదు చేయండి:", "సరియైన ఆధారాలు లేవు / సమాచారం అసంపూర్ణం");
+            if (reason !== null) {
+                const art = articles.find(a => a.id === id);
+                if (art) {
+                    art.status = 'rejected';
+                    art.rejectionReason = reason;
+                    saveArticles();
+                    alert("వార్త తిరస్కరించబడింది.");
+                }
+            }
+        }
+
+        function deleteArticle(id) {
+            if (confirm("ఈ వార్తను శాశ్వతంగా తొలగించాలా?")) {
+                articles = articles.filter(a => a.id !== id);
+                saveArticles();
+            }
+        }
+
+        function toggleReporterAccess(idx) {
+            reporters[idx].status = reporters[idx].status === 'active' ? 'disabled' : 'active';
+            localStorage.setItem('aadhya_reporters', JSON.stringify(reporters));
+            renderAdminLists();
+        }
+
+        // Authentication & Role Logic
+        function setLoginRole(role) {
+            loginRoleSelected = role;
+            if (role === 'reporter') {
+                document.getElementById('roleBtnReporter').className = "flex-1 py-2 rounded-lg bg-brandRed text-white shadow-sm transition";
+                document.getElementById('roleBtnAdmin').className = "flex-1 py-2 rounded-lg text-gray-600 hover:text-brandNavy transition";
+                document.getElementById('adminPinField').classList.add('hidden');
+            } else {
+                document.getElementById('roleBtnReporter').className = "flex-1 py-2 rounded-lg text-gray-600 hover:text-brandRed transition";
+                document.getElementById('roleBtnAdmin').className = "flex-1 py-2 rounded-lg bg-brandNavy text-white shadow-sm transition";
+                document.getElementById('adminPinField').classList.remove('hidden');
+            }
+        }
+
+        function sendOtp() {
+            const name = document.getElementById('loginName').value.trim();
+            const phone = document.getElementById('loginPhone').value.trim();
+
+            if (!name) {
+                alert("దయచేసి మీ పేరును నమోదు చేయండి");
+                return;
+            }
+            if (phone.length !== 10) {
+                alert("దయచేసి 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి");
+                return;
+            }
+
+            if (loginRoleSelected === 'admin') {
+                const pin = document.getElementById('loginPin').value.trim();
+                if (pin && pin !== '94400' && pin !== '2024') {
+                    alert("తప్పుడు అడ్మిన్ పిన్! (డిఫాల్ట్ పిన్: 94400)");
+                    return;
+                }
+            }
+
+            // Generate 6-digit OTP
+            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            document.getElementById('generatedOtpBadge').innerText = generatedOtp;
+
+            document.getElementById('loginStepPhone').classList.add('hidden');
+            document.getElementById('loginStepOtp').classList.remove('hidden');
+        }
+
+        function verifyOtpAndLogin() {
+            const entered = document.getElementById('enteredOtp').value.trim();
+            if (entered !== generatedOtp && entered !== "123456") {
+                alert("నమోదు చేసిన OTP సరైనది కాదు. దయచేసి ధృవీకరణ కోడ్‌ను సరిగ్గా నమోదు చేయండి.");
+                return;
+            }
+
+            const name = document.getElementById('loginName').value.trim();
+            const phone = "+91 " + document.getElementById('loginPhone').value.trim();
+
+            currentUser = {
+                name: name,
+                phone: phone,
+                role: loginRoleSelected
+            };
+
+            // Register into reporters list if new
+            if (!reporters.some(r => r.phone === phone)) {
+                reporters.push({
+                    name: name,
+                    phone: phone,
+                    assignedDistrict: "నారాయణపేట",
+                    status: "active"
+                });
+                localStorage.setItem('aadhya_reporters', JSON.stringify(reporters));
+            }
+
+            localStorage.setItem('aadhya_user', JSON.stringify(currentUser));
+            closeModal('loginModal');
+            updateAuthHeader();
+
+            alert(`స్వాగతం ${name}! మీరు ${loginRoleSelected === 'admin' ? 'అడ్మిన్' : 'రిపోర్టర్'} గా లాగిన్ అయ్యారు.`);
+
+            if (loginRoleSelected === 'admin') {
+                switchView('admin');
+            } else {
+                switchView('reporter');
+            }
+        }
+
+        function resetLoginSteps() {
+            document.getElementById('loginStepPhone').classList.remove('hidden');
+            document.getElementById('loginStepOtp').classList.add('hidden');
+            document.getElementById('enteredOtp').value = '';
+        }
+
+        function updateAuthHeader() {
+            const actionContainer = document.getElementById('authHeaderAction');
+            const badgeContainer = document.getElementById('currentUserBadge');
+
+            if (currentUser) {
+                actionContainer.innerHTML = `
+                    <button onclick="switchView('${currentUser.role === 'admin' ? 'admin' : 'reporter'}')" class="bg-brandGold text-brandNavy text-xs sm:text-sm font-black px-3 py-1.5 rounded-lg shadow transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-user-check"></i>
+                        <span>${currentUser.name} (${currentUser.role === 'admin' ? 'Admin' : 'Reporter'})</span>
+                    </button>
+                `;
+                badgeContainer.classList.remove('hidden');
+                badgeContainer.classList.add('flex');
+                document.getElementById('userNameDisplay').innerText = currentUser.name;
+                document.getElementById('userRoleBadge').innerText = currentUser.role;
+            } else {
+                actionContainer.innerHTML = `
+                    <button onclick="openModal('loginModal')" class="bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg border border-white/10 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-user-lock"></i>
+                        <span>లాగిన్ (Login)</span>
+                    </button>
+                `;
+                badgeContainer.classList.add('hidden');
+                badgeContainer.classList.remove('flex');
+            }
+        }
+
+        function logoutUser() {
+            if (confirm("మీరు ఖచ్చితంగా లాగౌట్ అవ్వాలనుకుంటున్నారా?")) {
+                currentUser = null;
+                localStorage.removeItem('aadhya_user');
+                updateAuthHeader();
+                switchView('feed');
+            }
+        }
+
+        // Permissions handler
+        function grantAllPermissions() {
+            localStorage.setItem('aadhya_permissions_prompted', 'true');
+            closeModal('permissionsModal');
+            captureGpsLocation();
+            alert("ధన్యవాదాలు! అవసరమైన అనుమతులు ప్రారంభించబడ్డాయి.");
+        }
+
+        // Modal Helpers
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
